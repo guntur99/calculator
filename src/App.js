@@ -50,7 +50,6 @@ const App = () => {
     const number1 = input1.current.value;
     const number2 = input2.current.value;
 
-    if (symbol !== "SWAP") {
     fetch('https://event.suratdigital.id/api/operations', {
       method: 'POST',
       body: JSON.stringify({
@@ -64,15 +63,16 @@ const App = () => {
       })
       .then((response) => response.json())
       .then((data) => {
-        setCalc({
-        ...calc,
-          res: !data.res ? 0 : data.res,
-        });
+        if (symbol === "SWAP") {
+          input1.current.value = data.res.number1;
+          input2.current.value = data.res.number2;
+        }else{
+          setCalc({
+          ...calc,
+            res: !data.res ? 0 : data.res,
+          });
+        }
       });
-    }else{
-      input1.current.value = number2;
-      input2.current.value = number1;
-    }
       
   };
 
@@ -80,7 +80,7 @@ const App = () => {
     e.preventDefault();
     e.currentTarget.classList.toggle('mode-on-off');
     const mode = e.currentTarget.classList.contains('mode-on-off') ? 'off' : 'on';
-    console.log(mode);
+    
     if(mode === 'off') {
       document.querySelector('.input1').disabled = true;
       document.querySelector('.input2').disabled = true;
