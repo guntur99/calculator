@@ -13,17 +13,15 @@ button:hover {
     background-color: rgb(79, 76, 98);
 }
 
-.equals {
-    /* grid-column: 3 / 5; */
+.clear {
     background-color: rgb(243, 61, 29);
 }
 
-.equals:hover {
+.clear:hover {
     background-color: rgb(228, 39, 15);
 }
 
 .onoff {
-    /* grid-column: 3 / 5; */
     background-color: rgb(243, 168, 29);
 }
 
@@ -31,13 +29,46 @@ button:hover {
     background-color: rgb(243, 168, 29);
 }
 
-.numb {
-    /* grid-column: 3 / 5; */
+
+/* Numbers: css */
+.numbon {
     background-color: rgb(252, 252, 252);
     color: rgb(79, 76, 98);
 }
 
-.numb:hover {
+.numbon:hover {
+    background-color: rgb(252, 252, 252);
+    color: rgb(79, 76, 98);
+}
+
+.numboff {
+    background-color: rgb(79, 76, 98);
+    color: rgb(252, 252, 252);
+}
+
+.numboff:hover {
+    background-color: rgb(79, 76, 98);
+    color: rgb(252, 252, 252);
+}
+
+
+/* Symbols: css */
+.symbolon {
+    background-color: rgb(79, 76, 98);
+    color: rgb(252, 252, 252);
+}
+
+.symbolon:hover {
+    background-color: rgb(79, 76, 98);
+    color: rgb(252, 252, 252);
+}
+
+.symboloff {
+    background-color: rgb(252, 252, 252);
+    color: rgb(79, 76, 98);
+}
+
+.symboloff:hover {
     background-color: rgb(252, 252, 252);
     color: rgb(79, 76, 98);
 }
