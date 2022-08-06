@@ -14,17 +14,11 @@ const btnValues = [
   ["ON/OFF", 0, "CLEAR"],
 ];
 
-const numbArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-const toLocaleString = (num) =>
-  String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
-
+const numbArr      = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const removeSpaces = (num) => num.toString().replace(/\s/g, "");
 
 const App = () => {
   let [calc, setCalc] = useState({
-    sign: "",
-    num: 0,
     num1: 0,
     num2: 0,
     res: 0,
@@ -45,23 +39,10 @@ const App = () => {
           calc.num1 === 0 ? value : calc.num1 + value,
         num2:
           calc.num2 === 0 ? value : calc.num2 + value,
-        num:
-          calc.num === 0 && value === "0"
-            ? "0"
-            : removeSpaces(calc.num) % 1 === 0
-            ? toLocaleString(Number(removeSpaces(calc.num + value)))
-            : toLocaleString(calc.num + value),
         res: !calc.sign ? 0 : calc.res,
       });
     }
   };
-
-  // var valNumber2 = 0;
-  // const handleChange = (e) => {
-  //   valNumber2 = e.target.value;
-  //   console.log(valNumber2);
-  //   // this.setState({value: e.target.value});
-  // }
 
   const symbolClickHandler = (e) => {
     e.preventDefault();
@@ -69,7 +50,7 @@ const App = () => {
     const number1 = input1.current.value;
     const number2 = input2.current.value;
 
-    // fetch('http://127.0.0.1:8000/api/operations', {
+    if (symbol !== "SWAP") {
     fetch('https://event.suratdigital.id/api/operations', {
       method: 'POST',
       body: JSON.stringify({
@@ -88,6 +69,10 @@ const App = () => {
           res: !data.res ? 0 : data.res,
         });
       });
+    }else{
+      input1.current.value = number2;
+      input2.current.value = number1;
+    }
       
   };
 
@@ -143,10 +128,8 @@ const App = () => {
   const clearClickHandler = () => {
     setCalc({
       ...calc,
-      sign: "",
       num1: 0,
       num2: 0,
-      num: 0,
       res: 0,
     });
   };
