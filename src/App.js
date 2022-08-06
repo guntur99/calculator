@@ -65,8 +65,30 @@ const App = () => {
 
   const symbolClickHandler = (e) => {
     e.preventDefault();
-    const value = e.target.innerHTML;
-    console.log(value);
+    const symbol  = e.target.innerHTML;
+    const number1 = input1.current.value;
+    const number2 = input2.current.value;
+
+    // fetch('http://127.0.0.1:8000/api/operations', {
+    fetch('https://event.suratdigital.id/api/operations', {
+      method: 'POST',
+      body: JSON.stringify({
+        number1: number1,
+        number2: number2,
+        symbol: symbol,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        setCalc({
+        ...calc,
+          res: !data.res ? 0 : data.res,
+        });
+      });
+      
   };
 
   const onoffClickHandler = (e) => {
@@ -117,6 +139,7 @@ const App = () => {
   const handleClick2 = () => {
     input2.current.focus();
   };
+
   const clearClickHandler = () => {
     setCalc({
       ...calc,
