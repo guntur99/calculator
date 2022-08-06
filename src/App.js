@@ -82,7 +82,8 @@ const App = () => {
     const mode = e.currentTarget.classList.contains('mode-on-off') ? 'off' : 'on';
     console.log(mode);
     if(mode === 'off') {
-  
+      document.querySelector('.input1').disabled = true;
+      document.querySelector('.input2').disabled = true;
       document.querySelector('.clear').disabled = true;
       document.querySelector('.clear').style.backgroundColor = '#212121';
       const allNumber = Array.from(document.querySelectorAll('button.numbon'));
@@ -98,7 +99,8 @@ const App = () => {
       });
 
     }else{
-    
+      document.querySelector('.input1').disabled = false;
+      document.querySelector('.input2').disabled = false;
       document.querySelector('.clear').disabled = false;
       document.querySelector('.clear').style.backgroundColor = '#f33d1d';
       const allNumber = Array.from(document.querySelectorAll('button.numboff'));
@@ -137,10 +139,10 @@ const App = () => {
   return (
     <Wrapper>
       <div className="inputBox">
-        <button className="" onClick={handleClick1}>Number 1</button>
-        <button className="" onClick={handleClick2}>Number 2</button>
-        <input id="number1" ref={input1} type="number" className="screenInput" placeholder="0" />
-        <input id="number2" ref={input2} type="number" className="screenInput" placeholder="0" />
+        <button className="btnNumber1" onClick={handleClick1}>Number 1</button>
+        <button className="btnNumber2" onClick={handleClick2}>Number 2</button>
+        <input id="number1" ref={input1} type="number" className="screenInput input1" placeholder="0" />
+        <input id="number2" ref={input2} type="number" className="screenInput input2" placeholder="0" />
       </div>
       <Screen className="result" value={calc.res} />
       <ButtonBox>
