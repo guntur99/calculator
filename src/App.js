@@ -129,40 +129,45 @@ const App = () => {
     //   num: 0,
     // });
   };
-  const disabled = false;
+
   const onoffClickHandler = (e) => {
     e.preventDefault();
     e.currentTarget.classList.toggle('mode-on-off');
     const mode = e.currentTarget.classList.contains('mode-on-off') ? 'off' : 'on';
     console.log(mode);
-    
-    const allNumber = Array.from(
-      mode === 'off' ? document.querySelectorAll('button.numbon') : document.querySelectorAll('button.numboff')
-    );
-    allNumber.forEach(element => {
-      if (mode === 'off') {
+    if(mode === 'off') {
+  
+      document.querySelector('.clear').disabled = true;
+      document.querySelector('.clear').style.backgroundColor = '#212121';
+      const allNumber = Array.from(document.querySelectorAll('button.numbon'));
+      allNumber.forEach(element => {
         element.className = 'numboff';
         element.disabled = true;
-      }else{
-        element.className = 'numbon';
-        element.disabled = false;
-      }
-    });
+      });
 
-
-    const allSymbol = Array.from(
-      mode === 'off' ? document.querySelectorAll('button.symbolon') : document.querySelectorAll('button.symboloff')
-    );
-    allSymbol.forEach(element => {
-      if (mode === 'off') {
+      const allSymbol = Array.from(document.querySelectorAll('button.symbolon'));
+      allSymbol.forEach(element => {
         element.className = 'symboloff';
         element.disabled = true;
-      }else{
+      });
+
+    }else{
+    
+      document.querySelector('.clear').disabled = false;
+      document.querySelector('.clear').style.backgroundColor = '#f33d1d';
+      const allNumber = Array.from(document.querySelectorAll('button.numboff'));
+      allNumber.forEach(element => {
+        element.className = 'numbon';
+        element.disabled = false;
+      });
+
+      const allSymbol = Array.from(document.querySelectorAll('button.symboloff'));
+      allSymbol.forEach(element => {
         element.className = 'symbolon';
         element.disabled = false;
-      }
-    });
-    console.log("ON/OFF");
+      });
+    }
+
   };
 
   const clearClickHandler = () => {
@@ -183,7 +188,6 @@ const App = () => {
             return (
               <Button
                 key={i}
-                disabled={disabled}
                 className={btn === "CLEAR" ? "clear" : (btn === "ON/OFF" ? "onoff" : (numbArr.includes(btn) ? "numbon" : "symbolon"))}
                 value={btn}
                 onClick={
