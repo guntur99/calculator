@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Wrapper from "./components/Wrapper";
 import Screen from "./components/Screen";
 import ButtonBox from "./components/ButtonBox";
@@ -25,16 +25,26 @@ const App = () => {
   let [calc, setCalc] = useState({
     sign: "",
     num: 0,
+    num1: 0,
+    num2: 0,
     res: 0,
   });
+
+  const input1 = useRef(null);
+  const input2 = useRef(null);
 
   const numClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
-
+    
     if (removeSpaces(calc.num).length < 16) {
+      input1.current.value = value;
       setCalc({
         ...calc,
+        num1:
+          calc.num1 === 0 ? value : calc.num1 + value,
+        num2:
+          calc.num2 === 0 ? value : calc.num2 + value,
         num:
           calc.num === 0 && value === "0"
             ? "0"
@@ -46,88 +56,17 @@ const App = () => {
     }
   };
 
-  // const commaClickHandler = (e) => {
-  //   e.preventDefault();
-  //   const value = e.target.innerHTML;
-
-  //   setCalc({
-  //     ...calc,
-  //     num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
-  //   });
-  // };
-
-  // const signClickHandler = (e) => {
-  //   e.preventDefault();
-  //   const value = e.target.innerHTML;
-
-  //   setCalc({
-  //     ...calc,
-  //     sign: value,
-  //     res: !calc.res && calc.num ? calc.num : calc.res,
-  //     num: 0,
-  //   });
-  // };
-
-  // const equalsClickHandler = () => {
-  //   if (calc.sign && calc.num) {
-  //     const math = (a, b, sign) =>
-  //       sign === "+"
-  //         ? a + b
-  //         : sign === "-"
-  //         ? a - b
-  //         : sign === "X"
-  //         ? a * b
-  //         : a / b;
-
-  //     setCalc({
-  //       ...calc,
-  //       res:
-  //         calc.num === "0" && calc.sign === "/"
-  //           ? "Can't divide with 0"
-  //           : toLocaleString(
-  //               math(
-  //                 Number(removeSpaces(calc.res)),
-  //                 Number(removeSpaces(calc.num)),
-  //                 calc.sign
-  //               )
-  //             ),
-  //       sign: "",
-  //       num: 0,
-  //     });
-  //   }
-  // };
-
-  // const invertClickHandler = () => {
-  //   setCalc({
-  //     ...calc,
-  //     num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
-  //     res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
-  //     sign: "",
-  //   });
-  // };
-
-  // const percentClickHandler = () => {
-  //   let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
-  //   let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
-
-  //   setCalc({
-  //     ...calc,
-  //     num: (num /= Math.pow(100, 1)),
-  //     res: (res /= Math.pow(100, 1)),
-  //     sign: "",
-  //   });
-  // };
+  // var valNumber2 = 0;
+  // const handleChange = (e) => {
+  //   valNumber2 = e.target.value;
+  //   console.log(valNumber2);
+  //   // this.setState({value: e.target.value});
+  // }
 
   const symbolClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
     console.log(value);
-    // setCalc({
-    //   ...calc,
-    //   sign: value,
-    //   res: !calc.res && calc.num ? calc.num : calc.res,
-    //   num: 0,
-    // });
   };
 
   const onoffClickHandler = (e) => {
@@ -170,10 +109,20 @@ const App = () => {
 
   };
 
+
+  const handleClick1 = () => {
+    input1.current.focus();
+  };
+
+  const handleClick2 = () => {
+    input2.current.focus();
+  };
   const clearClickHandler = () => {
     setCalc({
       ...calc,
       sign: "",
+      num1: 0,
+      num2: 0,
       num: 0,
       res: 0,
     });
@@ -181,7 +130,13 @@ const App = () => {
   
   return (
     <Wrapper>
-      <Screen value={calc.num ? calc.num : calc.res} />
+      <div className="inputBox">
+        <button className="" onClick={handleClick1}>Number 1</button>
+        <button className="" onClick={handleClick2}>Number 2</button>
+        <input id="number1" ref={input1} type="number" className="screenInput" placeholder="0" />
+        <input id="number2" ref={input2} type="number" className="screenInput" placeholder="0" />
+      </div>
+      <Screen className="result" value={calc.res} />
       <ButtonBox>
         {
           btnValues.flat().map((btn, i) => {
