@@ -1,4 +1,3 @@
 # Calculator with ReactJS
 
-# Live Calculator App
-https://calculator.suratdigital.id/
+Live Calculator App => https://calculator.suratdigital.id/
