@@ -26,21 +26,38 @@ const App = () => {
 
   const input1 = useRef(null);
   const input2 = useRef(null);
+  var status   = 0;
+  var newVal1  = 0;
+  var newVal2  = 0;
+
+  const handleClick1 = () => {
+    status = 1;
+    input1.current.focus();
+    document.querySelector('.input1').disabled = false;
+    document.querySelector('.input2').disabled = true;
+  };
+
+  const handleClick2 = () => {
+    status = 2;
+    input2.current.focus();
+    document.querySelector('.input1').disabled = true;
+    document.querySelector('.input2').disabled = false;
+  };
 
   const numClickHandler = (e) => {
     e.preventDefault();
-    const value = e.target.innerHTML;
-    
-    if (removeSpaces(calc.num).length < 16) {
-      input1.current.value = value;
-      setCalc({
-        ...calc,
-        num1:
-          calc.num1 === 0 ? value : calc.num1 + value,
-        num2:
-          calc.num2 === 0 ? value : calc.num2 + value,
-        res: !calc.sign ? 0 : calc.res,
-      });
+    if (status !== 0) {
+      const value = e.target.innerHTML;
+      if (status === 1) {
+        const val1 = Number(removeSpaces(input1.current.value)) === 0 ? value : removeSpaces(input1.current.value) + value;
+        newVal1 = val1;
+        input1.current.value = val1;
+      }else if (status === 2) {
+        console.log('status 2');
+        const val2 = Number(removeSpaces(input2.current.value)) === 0 ? value : removeSpaces(input2.current.value) + value;
+        newVal2 = val2;
+        input2.current.value = val2;
+      }
     }
   };
 
@@ -49,7 +66,7 @@ const App = () => {
     const symbol  = e.target.innerHTML;
     const number1 = input1.current.value;
     const number2 = input2.current.value;
-
+    
     fetch('https://event.suratdigital.id/api/operations', {
       method: 'POST',
       body: JSON.stringify({
@@ -64,6 +81,10 @@ const App = () => {
       .then((response) => response.json())
       .then((data) => {
         if (symbol === "SWAP") {
+          setCalc({
+          ...calc,
+            res: 0,
+          });
           input1.current.value = data.res.number1;
           input2.current.value = data.res.number2;
         }else{
@@ -71,6 +92,8 @@ const App = () => {
           ...calc,
             res: !data.res ? 0 : data.res,
           });
+          input1.current.value = number1;
+          input2.current.value = number2;
         }
       });
       
@@ -82,6 +105,8 @@ const App = () => {
     const mode = e.currentTarget.classList.contains('mode-on-off') ? 'off' : 'on';
     
     if(mode === 'off') {
+      document.querySelector('.btnNumber1').disabled = true;
+      document.querySelector('.btnNumber2').disabled = true;
       document.querySelector('.input1').disabled = true;
       document.querySelector('.input2').disabled = true;
       document.querySelector('.clear').disabled = true;
@@ -99,6 +124,8 @@ const App = () => {
       });
 
     }else{
+      document.querySelector('.btnNumber1').disabled = false;
+      document.querySelector('.btnNumber2').disabled = false;
       document.querySelector('.input1').disabled = false;
       document.querySelector('.input2').disabled = false;
       document.querySelector('.clear').disabled = false;
@@ -118,15 +145,6 @@ const App = () => {
 
   };
 
-
-  const handleClick1 = () => {
-    input1.current.focus();
-  };
-
-  const handleClick2 = () => {
-    input2.current.focus();
-  };
-
   const clearClickHandler = () => {
     setCalc({
       ...calc,
@@ -141,8 +159,8 @@ const App = () => {
       <div className="inputBox">
         <button className="btnNumber1" onClick={handleClick1}>Number 1</button>
         <button className="btnNumber2" onClick={handleClick2}>Number 2</button>
-        <input id="number1" ref={input1} type="number" className="screenInput input1" placeholder="0" />
-        <input id="number2" ref={input2} type="number" className="screenInput input2" placeholder="0" />
+        <input disabled id="number1" ref={input1} type="number" value={newVal1} className="screenInput input1" placeholder="0" />
+        <input disabled id="number2" ref={input2} type="number" value={newVal2} className="screenInput input2" placeholder="0" />
       </div>
       <Screen className="result" value={calc.res} />
       <ButtonBox>
