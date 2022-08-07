@@ -53,7 +53,6 @@ const App = () => {
         newVal1 = val1;
         input1.current.value = val1;
       }else if (status === 2) {
-        console.log('status 2');
         const val2 = Number(removeSpaces(input2.current.value)) === 0 ? value : removeSpaces(input2.current.value) + value;
         newVal2 = val2;
         input2.current.value = val2;
